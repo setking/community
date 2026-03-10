@@ -1,0 +1,30 @@
+app:
+  name: "web_app"
+  mode: "dev"
+  port: 8088
+  version: "0.0.1"
+  local: "zh"
+jwt:
+  key: "123456abcdefgh"
+log:
+  level: "debug"
+  filename: "log/web_app.log"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+mysql:
+  host: "192.168.194.133"
+  port: 3306
+  user: "root"
+  password: "k1310234627"
+  db: "community"
+redis:
+  host: "192.168.194.133"
+  password: "root"
+  port: 6379
+  db: 0
+  pool_size: 100
+  timeout: 10000
+snowflake:
+  start_time: 2022-01-07
+  machine_id: 1
