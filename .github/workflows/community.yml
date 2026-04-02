@@ -15,15 +15,15 @@ jobs:
           go-version: 1.25
       - name: Tidy
         run: go mod tidy
-        working-directory: ./backend
+        working-directory: ./backed
       - name: Build
         run: go build -o community .
-        working-directory: ./backend
+        working-directory: ./backed
       # 可选：上传测试产物（非必须）
       - uses: actions/upload-artifact@v4
         with:
           name: community-bin
-          path: backend/community*
+          path: backed/community*
 
   release:
     needs: test
@@ -37,10 +37,10 @@ jobs:
           go-version: 1.25
       - name: Tidy
         run: go mod tidy
-        working-directory: ./backend
+        working-directory: ./backed
       - name: Build for Release
         run: go build -o community .
-        working-directory: ./backend
+        working-directory: ./backed
 
       # 生成自动版本号
       - name: Generate version
@@ -54,7 +54,7 @@ jobs:
         with:
           tag_name: ${{ steps.version.outputs.VERSION }}
           name: "Auto Release ${{ steps.version.outputs.VERSION }}"
-          files: backend/community*
+          files: backed/community*
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
