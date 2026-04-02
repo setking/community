@@ -1,5 +1,7 @@
 package config
 
+import "time"
+
 // MySQL配置
 type MysqlConfig struct {
 	Host     string `mapstructure:"host" json:"host"`
@@ -55,8 +57,8 @@ type LogConfig struct {
 
 // snowflake 配置
 type SnowConfig struct {
-	StartTime string `mapstructure:"start_time"`
-	MachineID int64  `mapstructure:"machine_id"`
+	StartTime time.Time `mapstructure:"start_time"`
+	MachineID int64     `mapstructure:"machine_id"`
 }
 type ServerConfig struct {
 	MysqlInfo MysqlConfig `mapstructure:"mysql" json:"mysql"`

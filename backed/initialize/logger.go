@@ -28,8 +28,8 @@ func InitLogger() {
 	)
 	encoder := getEncoder()
 	var l = new(zapcore.Level)
-	var err error
-	err = l.UnmarshalText([]byte(global.ServerConfig.LogInfo.Level))
+
+	var err error = l.UnmarshalText([]byte(global.ServerConfig.LogInfo.Level))
 	if err != nil {
 		zap.S().Fatalf("invalid log level: %s", global.ServerConfig.LogInfo.Level)
 	}

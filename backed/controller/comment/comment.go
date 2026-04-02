@@ -13,6 +13,7 @@ import (
 )
 
 // 创建
+// Create create a comment in memory.
 func Create(c *gin.Context) {
 	comment := forms.CommentForm{}
 	if err := c.ShouldBind(&comment); err != nil {
@@ -41,6 +42,7 @@ func Create(c *gin.Context) {
 }
 
 // 列表
+// Get return the list information for a comment.
 func List(c *gin.Context) {
 	pages := c.DefaultQuery("p", "0")
 	pagesInt, _ := strconv.Atoi(pages)

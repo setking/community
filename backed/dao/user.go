@@ -88,7 +88,7 @@ func Login(LoginData forms.PasswordLoginForm) (*models.User, error) {
 	}
 	// 验证密码
 	passErr := utils.VerifyPassword(user.Password, LoginData.Password)
-	if passErr == false {
+	if !passErr {
 		return nil, errors.New("密码不正确")
 	}
 	return &user, nil

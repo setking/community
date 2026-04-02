@@ -1,0 +1,62 @@
+name: Go Test and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }} with Go ${{ matrix.go_version }}
+    runs-on: ${{ matrix.os }}
+    environment:
+      name: community
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        go_version: [1.24, 1.25]
+    steps:
+      - name: Set up Go ${{ matrix.go_version }}
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go_version }}
+        id: go
+      - name: Tidy
+        run: |
+          go mod tidy
+        working-directory: ./backend
+      - name: Build
+        run: |
+          go build -o community .
+        working-directory: ./backend
+  release:
+    name: Create Release and Upload Binary
+    needs: test                     # 等待所有测试通过后再发布
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')   # 确保只在 tag 时运行
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.25          # 选择一个固定的 Go 版本用于发布
+
+      - name: Tidy
+        run: go mod tidy
+        working-directory: ./backend
+
+      - name: Build for Release
+        run: go build -o community .
+        working-directory: ./backend
+
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: backend/community*   # 上传 backend 目录下的 community 或 community.exe
+          generate_release_notes: true   # 自动生成 Release 说明
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

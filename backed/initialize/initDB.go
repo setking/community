@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"myApp/global"
+	"myApp/pkg/code"
+	"myApp/pkg/errors"
 	"os"
 	"time"
 
@@ -14,7 +16,7 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-func InitDB() {
+func InitDB() error {
 	//dsn := "root:root@tcp(127.0.0.1:3306)/mall_user_srv?charset=utf8mb4&parseTime=True&loc=Local"
 	sqlInfo := global.ServerConfig.MysqlInfo
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", sqlInfo.User, sqlInfo.Password, sqlInfo.Host, sqlInfo.Port, sqlInfo.Db)
@@ -22,15 +24,15 @@ func InitDB() {
 	global.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
-
-			//TablePrefix:   "mall_", // 统一给所有表加前缀
 		},
 		Logger: InitSqlLogger(),
 	})
 	if err != nil {
-		panic(err)
+		//panic(err)
+		return errors.WithCode(code.ErrDatabase, err.Error())
 	}
 	zap.S().Infof("Database connected successfully!")
+	return nil
 }
 func InitSqlLogger() logger.Interface {
 	newLogger := logger.New(

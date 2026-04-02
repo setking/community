@@ -44,11 +44,20 @@ func InitTrans(locale string) (err error) {
 		}
 		switch locale {
 		case "en":
-			en_translations.RegisterDefaultTranslations(v, global.Trans)
+			err := en_translations.RegisterDefaultTranslations(v, global.Trans)
+			if err != nil {
+				return err
+			}
 		case "zh":
-			zh_translations.RegisterDefaultTranslations(v, global.Trans)
+			err := zh_translations.RegisterDefaultTranslations(v, global.Trans)
+			if err != nil {
+				return err
+			}
 		default:
-			en_translations.RegisterDefaultTranslations(v, global.Trans)
+			err := en_translations.RegisterDefaultTranslations(v, global.Trans)
+			if err != nil {
+				return err
+			}
 		}
 		return
 	}

@@ -21,7 +21,7 @@ func InitConfig() {
 	}
 	err := v.Unmarshal(global.ServerConfig)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	v.WatchConfig()
 	v.OnConfigChange(func(in fsnotify.Event) {

@@ -31,7 +31,6 @@ func HandleValidateError(ctx *gin.Context, err error) {
 	ctx.JSON(http.StatusBadRequest, gin.H{
 		"error": initialize.ReplaceString(errs.Translate(global.Trans)),
 	})
-	return
 }
 
 // 处理注册请求的函数
