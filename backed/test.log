@@ -1,0 +1,1 @@
+{"level":"INFO","time":"2026-03-26T19:39:43+08:00","file":"E:/workspace/community/backed/pkg/cuslog/tests/test.go:29","func":"main.main","message":"custom log with json formatter"}

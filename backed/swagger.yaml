@@ -1,0 +1,110 @@
+basePath: /
+consumes:
+    - application/json
+definitions:
+    CommentForm:
+        description: |-
+            评论
+            User represents body of Comment request and response.
+        properties:
+            author_id:
+                description: Comment's author_id.
+                format: int64
+                type: integer
+                x-go-name: AuthorID
+            comment_id:
+                description: Comment's comment_id.
+                type: string
+                x-go-name: CommentID
+            content:
+                description: Comment's content.
+                type: string
+                x-go-name: Content
+            parent_id:
+                description: Comment's parent_id.
+                type: string
+                x-go-name: ParentID
+            post_id:
+                description: Comment's post_id.
+                type: string
+                x-go-name: PostID
+            status:
+                description: Comment's status.
+                format: int8
+                type: integer
+                x-go-name: Status
+        required:
+            - author_id
+            - post_id
+            - parent_id
+            - comment_id
+            - status
+            - content
+        type: object
+        x-go-package: myApp/forms
+host: some-url.com
+info:
+    description: Documentation of our community API.
+    title: community.
+    version: 0.1.0
+paths:
+    /create:
+        post:
+            operationId: createCommentRequest
+            parameters:
+                - description: This text will appear as description of your request body.
+                  in: body
+                  name: Body
+                  schema:
+                    $ref: '#/definitions/CommentForm'
+            responses:
+                "200":
+                    $ref: '#/responses/createCommentResponse'
+                default:
+                    $ref: '#/responses/errResponse'
+            summary: Create a comment in memory.
+            tags:
+                - comment
+    /list:
+        get:
+            operationId: getCommentRequest
+            parameters:
+                - format: int64
+                  in: path
+                  name: p
+                  required: true
+                  type: integer
+                  x-go-name: P
+                - format: int64
+                  in: query
+                  name: "n"
+                  type: integer
+                  x-go-name: "N"
+            responses:
+                "200":
+                    $ref: '#/responses/getCommentResponse'
+                default:
+                    $ref: '#/responses/errResponse'
+            summary: Get a comment from memory.
+            tags:
+                - comment
+produces:
+    - application/json
+responses:
+    errResponse:
+        description: This text will appear as description of your error response body.
+        headers:
+            code:
+                description: Error code.
+                format: int64
+                type: integer
+            message:
+                description: Error message.
+                type: string
+schemes:
+    - http
+    - https
+securityDefinitions:
+    basic:
+        type: basic
+swagger: "2.0"
